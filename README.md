@@ -11,7 +11,7 @@
 
 ### Example:
 
-```
+```go
 func main() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		WSUpgrade(w, r, func(message Message) {
