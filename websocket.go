@@ -38,12 +38,13 @@ func WSUpgrade(w http.ResponseWriter, r *http.Request, messageEvent func(Message
 		} else {
 			if frame.OpCode == 0x1 {
 				message.Type = "string"
+				message.Data = string(data.([]byte))
 			} else if frame.OpCode == 0x2 {
 				message.Type = "binary"
+				message.Data = data.([]byte)
 			} else {
 				message.Type = "unknown"
 			}
-			message.Data = data
 
 			messageEvent(message)
 		}

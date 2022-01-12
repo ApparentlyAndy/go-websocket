@@ -21,3 +21,17 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 ```
+
+### Messages
+
+Messages sent from the client to server will be shown in a `Message` struct.
+
+```go
+type Message struct {
+	Type string
+	Data interface{}
+}
+```
+
+If `Message.Type` is "string", then `Message.Data` will have a `string`.
+If `Message.Typoe` is "binary", then `Message.Data` will have `[]byte`.
