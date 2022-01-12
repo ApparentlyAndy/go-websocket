@@ -33,5 +33,5 @@ type Message struct {
 }
 ```
 
-If `Message.Type` is "string", then `Message.Data` will have a `string`.
+If `Message.Type` is "string", then `Message.Data` will have a `string`.\
 If `Message.Typoe` is "binary", then `Message.Data` will have `[]byte`.
