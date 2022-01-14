@@ -8,22 +8,15 @@ import (
 	"github.com/ApparentlyAndy/go-websocket/internal"
 )
 
-type Message struct {
-	Type string
-	Data interface{}
-}
-
-func WSUpgrade(w http.ResponseWriter, r *http.Request, subscribeConnection func(*internal.Websocket), subscribeMessage func(Message)) {
+func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(*internal.Websocket), onReceive func(interface{})) {
 	ws, err := internal.HijackConnection(w, r)
 	ws.Handshake()
-
-	message := Message{}
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	subscribeConnection(ws)
+	onConnect(ws)
 
 	defer ws.Conn.Close()
 
@@ -39,16 +32,10 @@ func WSUpgrade(w http.ResponseWriter, r *http.Request, subscribeConnection func(
 			log.Println(err)
 		} else {
 			if frame.OpCode == 0x1 {
-				message.Type = "string"
-				message.Data = string(data.([]byte))
-			} else if frame.OpCode == 0x2 {
-				message.Type = "binary"
-				message.Data = data.([]byte)
+				onReceive(string(data.([]byte)))
 			} else {
-				message.Type = "unknown"
+				onReceive(data.([]byte))
 			}
-
-			subscribeMessage(message)
 		}
 	}
 }
