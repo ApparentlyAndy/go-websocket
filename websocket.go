@@ -10,7 +10,9 @@ import (
 
 type WSConnection *internal.Websocket
 
-func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(WSConnection), onReceive func(interface{})) {
+type Message *internal.Message
+
+func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(WSConnection), onReceive func(Message)) {
 	ws, err := internal.HijackConnection(w, r)
 	ws.Handshake()
 

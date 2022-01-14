@@ -15,13 +15,22 @@ type Frame struct {
 	Payload    []byte
 }
 
-func (f *Frame) ReadData() (interface{}, error) {
+type Message struct {
+	Type    string
+	Payload []byte
+}
+
+func (f *Frame) ReadData() (*Message, error) {
+	message := Message{}
 	if f.OpCode == 0x1 {
-		return string(f.Payload), nil
+		message.Type = "string"
 	} else if f.OpCode == 0x2 {
-		return f.Payload, nil
+		message.Type = "binary"
+	} else {
+		return &message, errors.New("unable to read data.")
 	}
-	return nil, errors.New("unable to read data.")
+	message.Payload = f.Payload
+	return &message, nil
 }
 
 func (f *Frame) makeDataFrame() []byte {
