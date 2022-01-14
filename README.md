@@ -14,7 +14,9 @@
 ```go
 func main() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		WSUpgrade(w, r, func(message Message) {
+		WSUpgrade(w, r, func(conn *websocket.Websocket) {
+			// You will get a pointer to the new connection.
+		}, func(message Message) {
 			// Your messages will be shown here.
 		})
 	})
