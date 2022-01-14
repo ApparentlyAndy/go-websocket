@@ -13,7 +13,7 @@ type Message struct {
 	Data interface{}
 }
 
-func WSUpgrade(w http.ResponseWriter, r *http.Request, messageEvent func(Message)) {
+func WSUpgrade(w http.ResponseWriter, r *http.Request, subscribeConnection func(*internal.Websocket), subscribeMessage func(Message)) {
 	ws, err := internal.HijackConnection(w, r)
 	ws.Handshake()
 
@@ -22,6 +22,8 @@ func WSUpgrade(w http.ResponseWriter, r *http.Request, messageEvent func(Message
 	if err != nil {
 		log.Println(err)
 	}
+
+	subscribeConnection(ws)
 
 	defer ws.Conn.Close()
 
@@ -46,7 +48,7 @@ func WSUpgrade(w http.ResponseWriter, r *http.Request, messageEvent func(Message
 				message.Type = "unknown"
 			}
 
-			messageEvent(message)
+			subscribeMessage(message)
 		}
 	}
 }
