@@ -12,11 +12,21 @@
 ### Example:
 
 ```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	websocket "github.com/ApparentlyAndy/go-websocket"
+)
+
 func main() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		WSUpgrade(w, r, func(conn *websocket.Websocket) {
 			// You will get a pointer to the new connection.
-		}, func(message Message) {
+		}, func(message websocket.Message) {
 			// Your messages will be shown here.
 		})
 	})
