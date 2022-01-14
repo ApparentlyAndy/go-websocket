@@ -8,7 +8,9 @@ import (
 	"github.com/ApparentlyAndy/go-websocket/internal"
 )
 
-func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(*internal.Websocket), onReceive func(interface{})) {
+type WSConnection *internal.Websocket
+
+func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(WSConnection), onReceive func(interface{})) {
 	ws, err := internal.HijackConnection(w, r)
 	ws.Handshake()
 
