@@ -33,11 +33,7 @@ func WSUpgrade(w http.ResponseWriter, r *http.Request, onConnect func(WSConnecti
 		if err != nil {
 			log.Println(err)
 		} else {
-			if frame.OpCode == 0x1 {
-				onReceive(string(data.([]byte)))
-			} else {
-				onReceive(data.([]byte))
-			}
+			onReceive(data)
 		}
 	}
 }
