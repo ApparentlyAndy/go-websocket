@@ -33,7 +33,7 @@ func (f *Frame) ReadData() (*Message, error) {
 	return &message, nil
 }
 
-func (f *Frame) makeDataFrame() []byte {
+func (f *Frame) MakeDataFrame() []byte {
 	data := make([]byte, 2)
 	data[0] = 0x80 ^ f.OpCode
 
